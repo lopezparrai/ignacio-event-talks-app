@@ -39,6 +39,7 @@ const elements = {
     errorMessage: document.getElementById('error-message'),
     retryBtn: document.getElementById('retry-btn'),
     emptyState: document.getElementById('empty-state'),
+    resetFiltersBtn: document.getElementById('reset-filters-btn'),
     
     // Composer
     composerEmpty: document.getElementById('composer-empty'),
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Filter events
     elements.categoryFiltersContainer.addEventListener('click', handleCategoryFilterClick);
+    elements.resetFiltersBtn.addEventListener('click', handleResetFilters);
 
     // Composer text area input
     elements.tweetTextarea.addEventListener('input', handleTweetTextareaInput);
@@ -181,6 +183,27 @@ function handleCategoryFilterClick(e) {
     filterTag.classList.add('active');
 
     state.categoryFilter = filterTag.dataset.category;
+    filterAndRender();
+}
+
+function handleResetFilters() {
+    // Reset search inputs
+    elements.searchInput.value = '';
+    state.searchQuery = '';
+    elements.clearSearch.style.display = 'none';
+    
+    // Reset category filter UI
+    const tags = elements.categoryFiltersContainer.querySelectorAll('.filter-tag');
+    tags.forEach(tag => {
+        if (tag.dataset.category === 'all') {
+            tag.classList.add('active');
+        } else {
+            tag.classList.remove('active');
+        }
+    });
+    state.categoryFilter = 'all';
+    
+    // Re-render
     filterAndRender();
 }
 
