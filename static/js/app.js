@@ -30,6 +30,8 @@ const elements = {
     resultsCount: document.getElementById('results-count'),
     releasesContainer: document.getElementById('releases-container'),
     exportCsvBtn: document.getElementById('export-csv-btn'),
+    themeToggleBtn: document.getElementById('theme-toggle'),
+    themeIcon: document.getElementById('theme-icon'),
     
     // States
     loadingState: document.getElementById('loading-state'),
@@ -53,6 +55,10 @@ const elements = {
 document.addEventListener('DOMContentLoaded', () => {
     // Initial fetch
     fetchReleases();
+
+    // Theme toggle
+    initTheme();
+    elements.themeToggleBtn.addEventListener('click', toggleTheme);
 
     // Refresh buttons
     elements.refreshBtn.addEventListener('click', fetchReleases);
@@ -493,4 +499,30 @@ function exportToCSV() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.documentElement.classList.add('light-theme');
+        elements.themeIcon.className = 'fa-solid fa-moon';
+        elements.themeToggleBtn.title = 'Switch to Dark Mode';
+    } else {
+        document.documentElement.classList.remove('light-theme');
+        elements.themeIcon.className = 'fa-solid fa-sun';
+        elements.themeToggleBtn.title = 'Switch to Light Mode';
+    }
+}
+
+function toggleTheme() {
+    const isLight = document.documentElement.classList.toggle('light-theme');
+    if (isLight) {
+        localStorage.setItem('theme', 'light');
+        elements.themeIcon.className = 'fa-solid fa-moon';
+        elements.themeToggleBtn.title = 'Switch to Dark Mode';
+    } else {
+        localStorage.setItem('theme', 'dark');
+        elements.themeIcon.className = 'fa-solid fa-sun';
+        elements.themeToggleBtn.title = 'Switch to Light Mode';
+    }
 }
