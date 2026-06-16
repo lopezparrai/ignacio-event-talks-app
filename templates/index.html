@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Explorer</title>
+    <!-- Google Fonts: Outfit and Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar or Header Panel -->
+        <header class="app-header">
+            <div class="header-logo">
+                <i class="fa-solid fa-database logo-icon"></i>
+                <div class="header-title-wrapper">
+                    <h1>BigQuery Releases</h1>
+                    <p class="subtitle">Stay updated with Google Cloud BigQuery changes</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="refresh-btn" class="btn btn-primary btn-refresh" title="Refresh notes">
+                    <i id="refresh-icon" class="fa-solid fa-arrows-rotate"></i>
+                    <span>Refresh</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Search and Filters Bar -->
+        <section class="filter-section">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input" placeholder="Search release notes by keyword...">
+                <button id="clear-search" class="clear-btn" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="category-filters" id="category-filters-container">
+                <button class="filter-tag active" data-category="all">All Updates</button>
+                <button class="filter-tag" data-category="feature">Features</button>
+                <button class="filter-tag" data-category="issue">Issues</button>
+                <button class="filter-tag" data-category="change">Changes</button>
+                <button class="filter-tag" data-category="deprecated">Deprecated</button>
+                <button class="filter-tag" data-category="other">Others</button>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <main class="main-content">
+            <!-- Left Panel: Release Notes List -->
+            <section class="list-panel">
+                <div class="panel-header">
+                    <span id="results-count">Loading updates...</span>
+                </div>
+                
+                <!-- Loading State -->
+                <div id="loading-state" class="loading-state">
+                    <div class="spinner-container">
+                        <div class="spinner"></div>
+                    </div>
+                    <p>Fetching BigQuery release notes...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="error-state" class="error-state" style="display: none;">
+                    <i class="fa-solid fa-triangle-exclamation error-icon"></i>
+                    <h3>Failed to fetch release notes</h3>
+                    <p id="error-message">Unknown error occurred</p>
+                    <button id="retry-btn" class="btn btn-secondary">
+                        <i class="fa-solid fa-rotate-right"></i> Try Again
+                    </button>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <i class="fa-solid fa-folder-open empty-icon"></i>
+                    <h3>No release notes found</h3>
+                    <p>Try adjusting your search terms or category filters.</p>
+                </div>
+
+                <!-- Releases List Container -->
+                <div id="releases-container" class="releases-list">
+                    <!-- Cards will be dynamically injected here -->
+                </div>
+            </section>
+
+            <!-- Right Panel: Tweet Composer -->
+            <aside class="composer-panel">
+                <div class="sticky-panel">
+                    <div id="composer-empty" class="composer-empty-state">
+                        <div class="twitter-bird-icon-wrapper">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </div>
+                        <h3>Select a Release Note</h3>
+                        <p>Click on any release card in the list to prepare and customize a Tweet about that update.</p>
+                    </div>
+
+                    <div id="composer-active" class="tweet-composer-card" style="display: none;">
+                        <div class="composer-header">
+                            <div class="composer-title">
+                                <i class="fa-brands fa-x-twitter composer-twitter-icon"></i>
+                                <h3>Draft a Tweet</h3>
+                            </div>
+                            <span class="composer-subtitle">Customize before sharing</span>
+                        </div>
+                        
+                        <div class="composer-body">
+                            <div class="textarea-wrapper">
+                                <textarea id="tweet-textarea" rows="6" placeholder="What's happening?"></textarea>
+                                <div class="textarea-actions">
+                                    <span id="char-counter" class="char-counter">280</span>
+                                </div>
+                            </div>
+
+                            <!-- Live preview of the Tweet -->
+                            <div class="tweet-preview-section">
+                                <span class="preview-label">Live Preview</span>
+                                <div class="tweet-bubble">
+                                    <div class="tweet-avatar">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div class="tweet-content-wrapper">
+                                        <div class="tweet-user-info">
+                                            <span class="user-name">You</span>
+                                            <span class="user-handle">@username</span>
+                                            <span class="bullet">·</span>
+                                            <span class="time-ago">now</span>
+                                        </div>
+                                        <p id="tweet-preview-text" class="tweet-text"></p>
+                                        
+                                        <!-- Mock Link Card -->
+                                        <div class="mock-link-card">
+                                            <div class="mock-card-image">
+                                                <i class="fa-solid fa-cloud-arrow-down cloud-link-icon"></i>
+                                            </div>
+                                            <div class="mock-card-content">
+                                                <span class="card-domain">cloud.google.com</span>
+                                                <h4 class="card-title">Google Cloud BigQuery Release Notes</h4>
+                                                <p class="card-desc">Official release notes and updates for Google Cloud BigQuery.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="composer-footer">
+                            <button id="tweet-btn" class="btn btn-twitter btn-block">
+                                <i class="fa-brands fa-x-twitter"></i>
+                                <span>Post to X / Twitter</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

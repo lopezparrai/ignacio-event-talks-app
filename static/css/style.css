@@ -1,0 +1,911 @@
+/* ==========================================================================
+   Design Tokens & Variables
+   ========================================================================== */
+:root {
+    /* Color Palette - Premium Dark Mode Theme */
+    --bg-primary: #0a0e17;
+    --bg-secondary: #121824;
+    --bg-tertiary: #1b2336;
+    
+    --border-color: #242f47;
+    --border-glow: rgba(66, 133, 244, 0.15);
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    /* Brand/Accent Colors */
+    --color-google-blue: #4285f4;
+    --color-google-blue-hover: #3572d4;
+    --color-twitter: #1d9bf0;
+    --color-twitter-hover: #1a8cd8;
+    --color-success: #34a853;
+    --color-danger: #ea4335;
+    
+    /* Category Accent Colors */
+    --cat-feature-bg: rgba(52, 168, 83, 0.15);
+    --cat-feature-color: #4ade80;
+    --cat-feature-border: rgba(52, 168, 83, 0.3);
+    
+    --cat-issue-bg: rgba(234, 67, 53, 0.15);
+    --cat-issue-color: #fca5a5;
+    --cat-issue-border: rgba(234, 67, 53, 0.3);
+    
+    --cat-change-bg: rgba(66, 133, 244, 0.15);
+    --cat-change-color: #93c5fd;
+    --cat-change-border: rgba(66, 133, 244, 0.3);
+    
+    --cat-deprecated-bg: rgba(251, 188, 5, 0.15);
+    --cat-deprecated-color: #fde047;
+    --cat-deprecated-border: rgba(251, 188, 5, 0.3);
+    
+    --cat-other-bg: rgba(148, 163, 184, 0.15);
+    --cat-other-color: #cbd5e1;
+    --cat-other-border: rgba(148, 163, 184, 0.3);
+
+    /* Shadows & Transitions */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 15px rgba(66, 133, 244, 0.2);
+    
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    --border-radius-sm: 6px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 18px;
+    --border-radius-pill: 9999px;
+}
+
+/* ==========================================================================
+   Global & Reset Styles
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: var(--border-radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ==========================================================================
+   App Container & Layout
+   ========================================================================== */
+.app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ==========================================================================
+   Header Styles
+   ========================================================================== */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo-icon {
+    font-size: 2rem;
+    color: var(--color-google-blue);
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.4));
+}
+
+.header-title-wrapper h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 30%, var(--color-google-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-title-wrapper .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-primary {
+    background-color: var(--color-google-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-google-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-color);
+    border-color: var(--text-muted);
+}
+
+.btn-twitter {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 600;
+}
+
+.btn-twitter:hover {
+    background-color: #f1f5f9;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.btn-block {
+    width: 100%;
+    padding: 12px;
+}
+
+.btn-refresh i {
+    transition: transform var(--transition-normal);
+}
+
+.btn-refresh.spinning i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Filter & Search Panel
+   ========================================================================== */
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 16px 12px 48px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--color-google-blue);
+    box-shadow: var(--shadow-glow);
+}
+
+.clear-btn {
+    position: absolute;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px;
+}
+
+.clear-btn:hover {
+    color: var(--text-primary);
+}
+
+/* Category Filter Tags */
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-tag {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: var(--border-radius-pill);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-tag:hover {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.filter-tag.active {
+    background-color: var(--color-google-blue);
+    border-color: var(--color-google-blue);
+    color: white;
+    box-shadow: 0 2px 8px rgba(66, 133, 244, 0.4);
+}
+
+/* ==========================================================================
+   Main Content Layout
+   ========================================================================== */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 450px;
+    gap: 24px;
+    align-items: start;
+    flex-grow: 1;
+}
+
+/* ==========================================================================
+   Left Panel: Release Notes List
+   ========================================================================== */
+.list-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 500px;
+}
+
+.panel-header {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.releases-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Release Card */
+.release-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    cursor: pointer;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.release-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-google-blue-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.release-card.selected {
+    border-color: var(--color-google-blue);
+    background-color: var(--bg-tertiary);
+    box-shadow: var(--shadow-glow), var(--shadow-md);
+}
+
+.release-card.selected::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--color-google-blue);
+}
+
+/* Card Header elements */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.date-badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 3px 8px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Dynamic Category Badges */
+.badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: var(--border-radius-pill);
+    border: 1px solid transparent;
+}
+
+.badge-feature {
+    background-color: var(--cat-feature-bg);
+    color: var(--cat-feature-color);
+    border-color: var(--cat-feature-border);
+}
+
+.badge-issue {
+    background-color: var(--cat-issue-bg);
+    color: var(--cat-issue-color);
+    border-color: var(--cat-issue-border);
+}
+
+.badge-change {
+    background-color: var(--cat-change-bg);
+    color: var(--cat-change-color);
+    border-color: var(--cat-change-border);
+}
+
+.badge-deprecated {
+    background-color: var(--cat-deprecated-bg);
+    color: var(--cat-deprecated-color);
+    border-color: var(--cat-deprecated-border);
+}
+
+.badge-other {
+    background-color: var(--cat-other-bg);
+    color: var(--cat-other-color);
+    border-color: var(--cat-other-border);
+}
+
+/* Selection Indicators */
+.card-select-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color var(--transition-fast);
+}
+
+.release-card:hover .card-select-hint {
+    color: var(--color-google-blue);
+}
+
+.release-card.selected .card-select-hint {
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+/* Card Content styling (Matches parsed release notes HTML) */
+.card-content {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.card-content p {
+    margin-bottom: 12px;
+}
+
+.card-content p:last-child {
+    margin-bottom: 0;
+}
+
+.card-content a {
+    color: var(--color-google-blue);
+    text-decoration: none;
+    border-bottom: 1px dashed transparent;
+    transition: border-bottom-color var(--transition-fast);
+}
+
+.card-content a:hover {
+    border-bottom-color: var(--color-google-blue);
+}
+
+.card-content ul {
+    margin-left: 20px;
+    margin-bottom: 12px;
+}
+
+.card-content code {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.card-content strong {
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   States (Loading, Error, Empty)
+   ========================================================================== */
+.loading-state, .error-state, .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+    gap: 16px;
+}
+
+.spinner-container {
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+
+.spinner {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--color-google-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.loading-state p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.error-icon {
+    font-size: 2.5rem;
+    color: var(--color-danger);
+    filter: drop-shadow(0 0 6px rgba(234, 67, 53, 0.3));
+}
+
+.error-state h3, .empty-state h3 {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.error-state p, .empty-state p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    max-width: 350px;
+}
+
+.empty-icon {
+    font-size: 2.5rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Right Panel: Tweet Composer
+   ========================================================================== */
+.composer-panel {
+    position: relative;
+}
+
+.sticky-panel {
+    position: sticky;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Empty State Composer */
+.composer-empty-state {
+    background-color: var(--bg-secondary);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 40px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 400px;
+    color: var(--text-secondary);
+}
+
+.twitter-bird-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(29, 155, 240, 0.1);
+    color: var(--color-twitter);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(29, 155, 240, 0.2);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(29, 155, 240, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(29, 155, 240, 0);
+    }
+}
+
+.composer-empty-state h3 {
+    font-size: 1.15rem;
+    color: var(--text-primary);
+}
+
+.composer-empty-state p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    max-width: 280px;
+}
+
+/* Active Composer Card */
+.tweet-composer-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.composer-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.composer-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.composer-twitter-icon {
+    color: var(--color-twitter);
+    font-size: 1.2rem;
+}
+
+.composer-title h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.composer-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.composer-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Textarea wrapper with active styling */
+.textarea-wrapper {
+    position: relative;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 12px;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.textarea-wrapper:focus-within {
+    border-color: var(--color-twitter);
+    box-shadow: 0 0 10px rgba(29, 155, 240, 0.15);
+}
+
+#tweet-textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: none;
+    line-height: 1.5;
+}
+
+.textarea-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 8px;
+}
+
+.char-counter {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.char-counter.warning {
+    color: var(--cat-deprecated-color);
+}
+
+.char-counter.danger {
+    color: var(--color-danger);
+}
+
+/* Live Tweet Preview */
+.tweet-preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.preview-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.tweet-bubble {
+    display: flex;
+    gap: 12px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 16px;
+}
+
+.tweet-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.tweet-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0; /* Ensures content doesn't break parent flexbox */
+}
+
+.tweet-user-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.user-name {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.user-handle, .bullet, .time-ago {
+    color: var(--text-muted);
+}
+
+.tweet-text {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+/* Mock Twitter Link Card */
+.mock-link-card {
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    margin-top: 8px;
+    background-color: var(--bg-secondary);
+}
+
+.mock-card-image {
+    width: 80px;
+    background-color: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.cloud-link-icon {
+    font-size: 1.5rem;
+    color: var(--color-google-blue);
+}
+
+.mock-card-content {
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.card-domain {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: lowercase;
+}
+
+.card-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.composer-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-color);
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   Responsive Media Queries
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .sticky-panel {
+        position: static;
+    }
+    
+    .composer-panel {
+        order: -1; /* Place composer at the top or let it stick, but for UX, order: 2 is better so list is first */
+        order: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: 16px;
+        gap: 16px;
+    }
+    
+    .app-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .header-logo {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .filter-section {
+        padding: 16px;
+    }
+    
+    .category-filters {
+        justify-content: center;
+    }
+}
