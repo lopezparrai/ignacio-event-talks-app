@@ -29,6 +29,7 @@ const elements = {
     categoryFiltersContainer: document.getElementById('category-filters-container'),
     resultsCount: document.getElementById('results-count'),
     releasesContainer: document.getElementById('releases-container'),
+    exportCsvBtn: document.getElementById('export-csv-btn'),
     
     // States
     loadingState: document.getElementById('loading-state'),
@@ -69,6 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Tweet action
     elements.tweetBtn.addEventListener('click', handleTweetSubmit);
+
+    // Export CSV action
+    elements.exportCsvBtn.addEventListener('click', exportToCSV);
 });
 
 // ==========================================================================
@@ -117,6 +121,7 @@ function setLoading(isLoading) {
         elements.errorState.style.display = 'none';
         elements.emptyState.style.display = 'none';
         elements.resultsCount.textContent = 'Fetching updates...';
+        elements.exportCsvBtn.style.display = 'none';
     } else {
         elements.refreshIcon.classList.remove('spinning');
         elements.refreshBtn.classList.remove('spinning');
@@ -131,6 +136,7 @@ function setErrorState(errorMsg) {
         elements.releasesContainer.style.display = 'none';
         elements.emptyState.style.display = 'none';
         elements.resultsCount.textContent = 'Error loading releases';
+        elements.exportCsvBtn.style.display = 'none';
     } else {
         elements.errorState.style.display = 'none';
     }
@@ -217,11 +223,13 @@ function renderReleasesList() {
     if (count === 0) {
         elements.releasesContainer.style.display = 'none';
         elements.emptyState.style.display = 'flex';
+        elements.exportCsvBtn.style.display = 'none';
         return;
     }
 
     elements.releasesContainer.style.display = 'flex';
     elements.emptyState.style.display = 'none';
+    elements.exportCsvBtn.style.display = 'inline-flex';
 
     state.filteredReleases.forEach(release => {
         const card = createReleaseCard(release);
@@ -248,8 +256,13 @@ function createReleaseCard(release) {
                 <span class="date-badge">${escapeHTML(release.date)}</span>
                 <span class="badge ${badgeClass}">${escapeHTML(release.category)}</span>
             </div>
-            <div class="card-select-hint">
-                ${isSelected ? '<i class="fa-solid fa-circle-check"></i> Selected' : '<i class="fa-solid fa-plus"></i> Select to Tweet'}
+            <div class="card-actions">
+                <button class="card-action-btn copy-btn" title="Copy text to clipboard">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+                <div class="card-select-hint">
+                    ${isSelected ? '<i class="fa-solid fa-circle-check"></i> Selected' : '<i class="fa-solid fa-plus"></i> Select to Tweet'}
+                </div>
             </div>
         </div>
         <div class="card-content">
@@ -260,6 +273,13 @@ function createReleaseCard(release) {
     // Click handler to select card
     card.addEventListener('click', () => {
         selectRelease(release.id);
+    });
+
+    // Copy handler
+    const copyBtn = card.querySelector('.copy-btn');
+    copyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        copyToClipboard(release.text_content, copyBtn);
     });
 
     return card;
@@ -409,4 +429,68 @@ function escapeHTML(str) {
             '"': '&quot;'
         }[tag] || tag)
     );
+}
+
+function copyToClipboard(text, buttonElement) {
+    navigator.clipboard.writeText(text).then(() => {
+        const icon = buttonElement.querySelector('i');
+        icon.className = 'fa-solid fa-check';
+        buttonElement.classList.add('copied');
+        buttonElement.title = 'Copied!';
+        
+        setTimeout(() => {
+            icon.className = 'fa-regular fa-copy';
+            buttonElement.classList.remove('copied');
+            buttonElement.title = 'Copy text to clipboard';
+        }, 1500);
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+        alert('Could not copy text to clipboard.');
+    });
+}
+
+function exportToCSV() {
+    if (state.filteredReleases.length === 0) return;
+    
+    const headers = ['Date', 'Category', 'Text Content', 'Documentation URL'];
+    const rows = state.filteredReleases.map(release => [
+        release.date,
+        release.category,
+        release.text_content,
+        release.link
+    ]);
+    
+    const escapeCSVField = (field) => {
+        if (field === null || field === undefined) return '""';
+        const stringified = String(field);
+        if (stringified.includes('"') || stringified.includes(',') || stringified.includes('\n') || stringified.includes('\r')) {
+            return `"${stringified.replace(/"/g, '""')}"`;
+        }
+        return stringified;
+    };
+    
+    const csvContent = [
+        headers.map(escapeCSVField).join(','),
+        ...rows.map(row => row.map(escapeCSVField).join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    let filename = 'bigquery_release_notes';
+    if (state.categoryFilter !== 'all') {
+        filename += `_${state.categoryFilter}`;
+    }
+    if (state.searchQuery) {
+        filename += '_filtered';
+    }
+    filename += '.csv';
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
